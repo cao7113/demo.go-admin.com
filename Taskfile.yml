@@ -1,0 +1,7 @@
+# https://taskfile.dev
+version: '3'
+tasks:
+  run:
+    - go run .
+  sql:
+    - mycli -uroot --password='' go_admin_demo

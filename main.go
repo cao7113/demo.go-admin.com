@@ -4,8 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/GoAdminGroup/filemanager"
-	"github.com/GoAdminGroup/go-admin/plugins"
 	"log"
 	"net/http"
 	"os"
@@ -41,7 +39,7 @@ func main() {
 	template.AddComp(echarts.NewChart())
 
 	rootPath := "/data/www/go-admin-en"
-	//rootPath = "."
+	rootPath = "."
 
 	cfg := config.ReadFromJson(rootPath + "/config.json")
 	cfg.CustomFootHtml = template.HTML(`<div style="display:none;">
@@ -90,7 +88,7 @@ func main() {
 		return values, nil
 	})
 
-	if err := eng.AddConfig(cfg).
+	if err := eng.AddConfig(&cfg).
 		AddGenerators(tables.Generators).
 		AddGenerator("user", tables.GetUserTable).
 		//AddPlugins(filemanager.NewFileManagerWithConfig(filemanager.Config{
@@ -147,13 +145,13 @@ func main() {
 		})
 	})
 
-	plug, _ := plugins.FindByName("filemanager")
-	plug.(*filemanager.FileManager).SetPathValidator(func(path string) error {
-		if path != "/data/www/go-admin-en/fm_example" {
-			return errors.New("no permission")
-		}
-		return nil
-	})
+	//plug, _ := plugins.FindByName("filemanager")
+	//plug.(*filemanager.FileManager).SetPathValidator(func(path string) error {
+	//	if path != "/data/www/go-admin-en/fm_example" {
+	//		return errors.New("no permission")
+	//	}
+	//	return nil
+	//})
 
 	srv := &http.Server{
 		Addr:    ":9032",
